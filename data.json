@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "sistema": "Sibila Cósmica",
+    "natureza": "linguagem narrativa concreta evolutiva",
+    "regra": "cartas são átomos de significado que se combinam em moléculas narrativas",
+    "tom": "direto, humano, observacional, profundo",
+    "versao": "2.0",
+    "modos": ["basico", "profundo", "quantico", "coletivo"]
+  },
+
+  "tipos": {
+    "pessoa": "Alguém concreto na vida do consulente",
+    "acao": "Algo que acontece ou se move",
+    "estado": "Clima emocional ou situação estabilizada",
+    "resultado": "Consequência visível",
+    "tempo": "Ritmo ou momento dos acontecimentos",
+    "arquétipo": "Padrão universal de comportamento",
+    "portal": "Momento de transição ou passagem"
+  },
+
+  "camadas": {
+    "pessoal": "Padrões individuais recorrentes",
+    "relacional": "Dinâmicas entre pessoas",
+    "transpessoal": "Conexões com o coletivo",
+    "temporal": "Ciclos e sincronicidades",
+    "arquetípica": "Padrões universais"
+  },
+
+  "cartas": [
+    { "id": "mensageiro", "nome": "Mensageiro", "tipo": "acao", "descricao": "Uma notícia ou contacto chega.", "liga": ["inimigo", "alegria", "trabalho"], "arquétipo": "Hermes", "cor": "#4A90E2", "icon": "✉️" },
+    { "id": "visita", "nome": "Visita", "tipo": "acao", "descricao": "Alguém aproxima-se ou aparece.", "liga": ["amor", "alegria"], "arquétipo": "Hóspede", "cor": "#7B68EE", "icon": "👥" },
+    { "id": "inimigo", "nome": "Inimigo", "tipo": "pessoa", "descricao": "Alguém age contra ti em silêncio.", "liga": ["trabalho", "tristeza"], "arquétipo": "Sombra", "cor": "#DC143C", "icon": "⚔️" },
+    { "id": "amigo", "nome": "Amigo", "tipo": "pessoa", "descricao": "Alguém apoia ou protege.", "liga": ["alegria", "esperanca"], "arquétipo": "Aliado", "cor": "#32CD32", "icon": "🤝" },
+    { "id": "amor", "nome": "Amor", "tipo": "estado", "descricao": "Ligação afetiva ativa.", "liga": ["ciumes", "felicidade"], "arquétipo": "Eros", "cor": "#FF69B4", "icon": "❤️" },
+    { "id": "ciumes", "nome": "Ciúmes", "tipo": "estado", "descricao": "Posse, desconfiança, tensão.", "liga": ["inimigo"], "arquétipo": "Posse", "cor": "#9370DB", "icon": "👁️" },
+    { "id": "trabalho", "nome": "Trabalho", "tipo": "estado", "descricao": "Assuntos profissionais e esforço.", "liga": ["dinheiro", "inimigo"], "arquétipo": "Hefesto", "cor": "#DAA520", "icon": "⚒️" },
+    { "id": "dinheiro", "nome": "Dinheiro", "tipo": "resultado", "descricao": "Ganhos ou perdas materiais.", "liga": ["fortuna"], "arquétipo": "Prosperidade", "cor": "#FFD700", "icon": "💰" },
+    { "id": "fortuna", "nome": "Fortuna", "tipo": "resultado", "descricao": "Sorte concreta, oportunidade.", "liga": ["alegria"], "arquétipo": "Fortuna", "cor": "#FF8C00", "icon": "🍀" },
+    { "id": "alegria", "nome": "Alegria", "tipo": "estado", "descricao": "Felicidade visível.", "liga": ["celebracao"], "arquétipo": "Bem-aventurança", "cor": "#FFD700", "icon": "😊" },
+    { "id": "celebracao", "nome": "Celebração", "tipo": "acao", "descricao": "Evento feliz, encontro social.", "liga": ["alegria"], "arquétipo": "Dionísio", "cor": "#FF6347", "icon": "🎉" },
+    { "id": "tristeza", "nome": "Tristeza", "tipo": "estado", "descricao": "Desgosto ou decepção.", "liga": ["solidao"], "arquétipo": "Melancolia", "cor": "#4682B4", "icon": "💧" },
+    { "id": "solidao", "nome": "Solidão", "tipo": "estado", "descricao": "Isolamento, afastamento.", "liga": ["reflexao"], "arquétipo": "Eremita", "cor": "#708090", "icon": "🏔️" },
+    { "id": "reflexao", "nome": "Reflexão", "tipo": "estado", "descricao": "Pensar, ponderar.", "liga": ["decisao"], "arquétipo": "Atena", "cor": "#2F4F4F", "icon": "🧠" },
+    { "id": "decisao", "nome": "Decisão", "tipo": "acao", "descricao": "Escolha importante.", "liga": ["mudanca"], "arquétipo": "Bifurcação", "cor": "#228B22", "icon": "⚖️" },
+    { "id": "mudanca", "nome": "Mudança", "tipo": "acao", "descricao": "Transformação concreta.", "liga": ["viagem"], "arquétipo": "Metamorfose", "cor": "#8A2BE2", "icon": "🦋" },
+    { "id": "viagem", "nome": "Viagem", "tipo": "acao", "descricao": "Deslocamento ou transição.", "liga": ["retorno"], "arquétipo": "Odisséia", "cor": "#1E90FF", "icon": "🧭" },
+    { "id": "retorno", "nome": "Retorno", "tipo": "acao", "descricao": "Algo ou alguém volta.", "liga": ["reencontro"], "arquétipo": "Ciclo", "cor": "#00CED1", "icon": "↩️" },
+    { "id": "reencontro", "nome": "Reencontro", "tipo": "acao", "descricao": "Contacto após afastamento.", "liga": ["alegria", "confronto"], "arquétipo": "Reconexão", "cor": "#FF1493", "icon": "👋" },
+    { "id": "confronto", "nome": "Confronto", "tipo": "acao", "descricao": "Discussão ou choque.", "liga": ["rompimento"], "arquétipo": "Batalha", "cor": "#8B0000", "icon": "⚡" },
+    { "id": "rompimento", "nome": "Rompimento", "tipo": "resultado", "descricao": "Separação clara.", "liga": ["libertacao"], "arquétipo": "Separação", "cor": "#4B0082", "icon": "✂️" },
+    { "id": "libertacao", "nome": "Libertação", "tipo": "resultado", "descricao": "Fim de um peso.", "liga": ["esperanca"], "arquétipo": "Liberdade", "cor": "#00FA9A", "icon": "🕊️" },
+    { "id": "esperanca", "nome": "Esperança", "tipo": "estado", "descricao": "Expectativa positiva.", "liga": ["futuro"], "arquétipo": "Promessa", "cor": "#87CEEB", "icon": "🌟" },
+    { "id": "futuro", "nome": "Futuro", "tipo": "tempo", "descricao": "O que se aproxima.", "liga": [], "arquétipo": "Hórus", "cor": "#00008B", "icon": "🔮" },
+    { "id": "portal", "nome": "Portal", "tipo": "portal", "descricao": "Momento de passagem para novo estado.", "liga": ["mudanca", "viagem", "decisao"], "arquétipo": "Limiar", "cor": "#9400D3", "icon": "🌀" },
+    { "id": "eco", "nome": "Eco", "tipo": "tempo", "descricao": "Padrão que se repete.", "liga": ["reflexao", "reencontro"], "arquétipo": "Eterno Retorno", "cor": "#20B2AA", "icon": "📯" },
+    { "id": "semente", "nome": "Semente", "tipo": "resultado", "descricao": "Início pequeno de algo grande.", "liga": ["futuro", "esperanca"], "arquétipo": "Potencial", "cor": "#228B22", "icon": "🌱" }
+  ],
+
+  "ciclos": {
+    "lunares": ["nova", "crescente", "cheia", "minguante"],
+    "sazonais": ["inverno", "primavera", "verao", "outono"],
+    "diarios": ["madrugada", "manha", "tarde", "noite", "meia-noite"]
+  },
+
+  "narrativas_base": [
+    "A carta {0} encontra {1} e juntas {2}.",
+    "{0} enquanto {1}, levando a {2}.",
+    "Primeiro {0}, depois {1}, finalmente {2}.",
+    "{0} no contexto de {1} revela {2}.",
+    "{0} ecoa em {1} e ressoa em {2}."
+  ],
+
+  "perguntas_provocativas": [
+    "O que esta sequência está a pedir-te para ver?",
+    "Como esta energia se manifesta na tua vida agora?",
+    "Que parte desta mensagem te desconforta?",
+    "O que precisas de aceitar para seguir em frente?",
+    "Que padrão antigo esta leitura está a tocar?"
+  ]
+}

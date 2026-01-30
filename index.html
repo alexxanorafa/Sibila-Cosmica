@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt" data-modo="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sibila Cósmica</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
+</head>
+<body>
+  <!-- Modo AR (oculto inicialmente) -->
+  <div id="ar-overlay" class="hidden">
+    <div class="ar-header">
+      <button onclick="sairModoAR()"><i class="fas fa-times"></i></button>
+      <h3>Modo Realidade Expandida</h3>
+    </div>
+    <div id="ar-container">
+      <video id="ar-video" autoplay playsinline></video>
+      <canvas id="ar-canvas"></canvas>
+      <div id="ar-cartas"></div>
+    </div>
+  </div>
+
+  <!-- Interface Principal -->
+  <div class="container">
+    <!-- Cabeçalho com Navegação -->
+    <header class="header">
+      <div class="logo-container">
+        <h1 class="logo">SIBILA CÓSMICA - Sistema de Inteligência Narrativa</h1>
+        <p class="sublogo">Linguagem narrativa evolutiva</p>
+      </div>
+      
+      <nav class="nav">
+        <button class="nav-btn active" data-tab="leitura"><i class="fas fa-eye"></i> Leitura</button>
+        <button class="nav-btn" data-tab="mapa"><i class="fas fa-project-diagram"></i> Mapa</button>
+        <button class="nav-btn" data-tab="historico"><i class="fas fa-history"></i> Histórico</button>
+        <button class="nav-btn" data-tab="estatisticas"><i class="fas fa-chart-bar"></i> Estatísticas</button>
+        <button class="nav-btn" data-tab="config"><i class="fas fa-cog"></i> Configuração</button>
+      </nav>
+      
+      <div class="ciclo-info">
+        <div class="ciclo-item">
+          <i class="fas fa-moon"></i>
+          <span id="fase-lunar">Lua Cheia</span>
+        </div>
+        <div class="ciclo-item">
+          <i class="fas fa-sun"></i>
+          <span id="periodo-dia">Tarde</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <!-- ABA: LEITURA -->
+      <section id="leitura" class="tab-content active">
+        <div class="painel-leitura">
+          <!-- Painel Esquerdo: Configuração -->
+          <div class="config-leitura">
+            <div class="config-card">
+              <h3><i class="fas fa-sliders-h"></i> Configurar Leitura</h3>
+              
+              <div class="config-group">
+                <label for="modo-leitura">Modo de Leitura:</label>
+                <select id="modo-leitura">
+                  <option value="basico">Básico (3 cartas)</option>
+                  <option value="profundo">Profundo (5 cartas)</option>
+                  <option value="quantico">Quântico (cartas em superposição)</option>
+                  <option value="temporal">Temporal (com ciclos)</option>
+                  <option value="coletivo">Coletivo (com sabedoria global)</option>
+                </select>
+              </div>
+              
+              <div class="config-group">
+                <label for="pergunta">Sua Pergunta (opcional):</label>
+                <textarea id="pergunta" placeholder="O que precisa observar agora?..." rows="3"></textarea>
+              </div>
+              
+              <div class="config-group">
+                <label for="camada-foco">Camada de Foco:</label>
+                <div class="camadas-buttons">
+                  <button class="camada-btn active" data-camada="pessoal">Pessoal</button>
+                  <button class="camada-btn" data-camada="relacional">Relacional</button>
+                  <button class="camada-btn" data-camada="temporal">Temporal</button>
+                  <button class="camada-btn" data-camada="arquetipica">Arquetípica</button>
+                </div>
+              </div>
+              
+              <button class="btn-principal" onclick="realizarLeitura()">
+                <i class="fas fa-crystal-ball"></i> Observar a Situação
+              </button>
+              
+              <button class="btn-secundario" onclick="ativarModoAR()">
+                <i class="fas fa-vr-cardboard"></i> Modo Realidade Expandida
+              </button>
+            </div>
+            
+            <!-- Estado do Sistema -->
+            <div class="estado-sistema">
+              <h4><i class="fas fa-brain"></i> Estado do Sistema</h4>
+              <div class="estado-info">
+                <div class="estado-item">
+                  <span class="estado-label">Sessões:</span>
+                  <span id="contador-sessoes">0</span>
+                </div>
+                <div class="estado-item">
+                  <span class="estado-label">Padrões Aprendidos:</span>
+                  <span id="contador-padroes">0</span>
+                </div>
+                <div class="estado-item">
+                  <span class="estado-label">Nível de Conexão:</span>
+                  <div class="barra-conexao">
+                    <div class="barra-progresso" id="barra-conexao"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Painel Central: Cartas e Narrativa -->
+          <div class="area-cartas">
+            <div class="header-cartas">
+              <h2 id="titulo-leitura">Leitura Atual</h2>
+              <div class="acoes-cartas">
+                <button class="btn-icone" onclick="salvarLeitura()" title="Salvar Leitura">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+                <button class="btn-icone" onclick="compartilharLeitura()" title="Compartilhar">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="btn-icone" onclick="exportarLeitura()" title="Exportar">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Container de Cartas -->
+            <div id="container-cartas" class="cartas-container">
+              <div class="instrucao-cartas">
+                <i class="fas fa-hand-pointer"></i>
+                <p>Clique em "Observar a Situação" para começar</p>
+              </div>
+            </div>
+            
+            <!-- Narrativa -->
+            <div id="container-narrativa" class="narrativa-container hidden">
+              <div class="narrativa-header">
+                <h3><i class="fas fa-scroll"></i> Narrativa Gerada</h3>
+                <button class="btn-icone" onclick="regenerarNarrativa()" title="Gerar nova narrativa">
+                  <i class="fas fa-redo"></i>
+                </button>
+              </div>
+              <div class="narrativa-texto" id="texto-narrativa"></div>
+              
+              <!-- Análise Profunda -->
+              <div class="analise-container" id="container-analise">
+                <h4><i class="fas fa-microscope"></i> Análise Profunda</h4>
+                <div id="texto-analise"></div>
+              </div>
+              
+              <!-- Pergunta Provocativa -->
+              <div class="pergunta-container" id="container-pergunta">
+                <h4><i class="fas fa-question-circle"></i> Pergunta para Reflexão</h4>
+                <p id="texto-pergunta"></p>
+              </div>
+              
+              <!-- Feedback -->
+              <div class="feedback-container">
+                <p>Esta leitura foi útil?</p>
+                <div class="feedback-buttons">
+                  <button class="feedback-btn positivo" onclick="darFeedback('positivo')">
+                    <i class="fas fa-thumbs-up"></i> Sim
+                  </button>
+                  <button class="feedback-btn neutro" onclick="darFeedback('neutro')">
+                    <i class="fas fa-meh"></i> Mais ou menos
+                  </button>
+                  <button class="feedback-btn negativo" onclick="darFeedback('negativo')">
+                    <i class="fas fa-thumbs-down"></i> Não
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Painel Direito: Contexto e Conexões -->
+          <div class="painel-contexto">
+            <div class="contexto-card">
+              <h3><i class="fas fa-layer-group"></i> Contexto Atual</h3>
+              <div id="contexto-temporal" class="contexto-item">
+                <h4><i class="fas fa-clock"></i> Temporal</h4>
+                <p>Carregando contexto temporal...</p>
+              </div>
+              <div id="contexto-ciclico" class="contexto-item">
+                <h4><i class="fas fa-infinity"></i> Ciclos</h4>
+                <p>Carregando ciclos atuais...</p>
+              </div>
+              <div id="contexto-coletivo" class="contexto-item">
+                <h4><i class="fas fa-users"></i> Coletivo</h4>
+                <p>Conectando à sabedoria coletiva...</p>
+              </div>
+            </div>
+            
+            <!-- Conexões das Cartas -->
+            <div class="conexoes-card" id="container-conexoes">
+              <h3><i class="fas fa-link"></i> Conexões</h3>
+              <div class="instrucao-conexoes">
+                <p>As conexões aparecerão após a leitura</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: MAPA -->
+      <section id="mapa" class="tab-content">
+        <div class="mapa-header">
+          <h2><i class="fas fa-project-diagram"></i> Mapa de Relações</h2>
+          <div class="mapa-controles">
+            <button class="btn-icone" onclick="reiniciarMapa()" title="Reiniciar visualização">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="btn-icone" onclick="exportarMapa()" title="Exportar mapa">
+              <i class="fas fa-download"></i>
+            </button>
+            <select id="filtro-mapa">
+              <option value="todos">Todos os Tipos</option>
+              <option value="acao">Ações</option>
+              <option value="estado">Estados</option>
+              <option value="pessoa">Pessoas</option>
+              <option value="resultado">Resultados</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="mapa-container">
+          <canvas id="canvas-mapa" width="1200" height="800"></canvas>
+          <div class="legenda-mapa">
+            <h4>Legenda:</h4>
+            <div class="legenda-item"><span class="cor-legenda" style="background:#4A90E2"></span> Ação</div>
+            <div class="legenda-item"><span class="cor-legenda" style="background:#FF69B4"></span> Estado</div>
+            <div class="legenda-item"><span class="cor-legenda" style="background:#32CD32"></span> Pessoa</div>
+            <div class="legenda-item"><span class="cor-legenda" style="background:#FFD700"></span> Resultado</div>
+            <div class="legenda-item"><span class="cor-legenda" style="background:#00008B"></span> Tempo</div>
+          </div>
+        </div>
+        
+        <div class="info-mapa">
+          <div class="info-item">
+            <h4><i class="fas fa-sitemap"></i> Estrutura da Rede</h4>
+            <p><strong>Nós:</strong> <span id="contador-nos">0</span></p>
+            <p><strong>Conexões:</strong> <span id="contador-conexoes">0</span></p>
+            <p><strong>Densidade:</strong> <span id="densidade-rede">0%</span></p>
+          </div>
+          <div class="info-item">
+            <h4><i class="fas fa-bullseye"></i> Nós Centrais</h4>
+            <div id="nos-centrais"></div>
+          </div>
+          <div class="info-item">
+            <h4><i class="fas fa-road"></i> Caminhos</h4>
+            <div class="caminho-input">
+              <select id="carta-origem">
+                <option value="">Origem</option>
+              </select>
+              <select id="carta-destino">
+                <option value="">Destino</option>
+              </select>
+              <button onclick="encontrarCaminhos()">Encontrar Caminhos</button>
+            </div>
+            <div id="resultado-caminhos"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: HISTÓRICO -->
+      <section id="historico" class="tab-content">
+        <div class="historico-header">
+          <h2><i class="fas fa-history"></i> Histórico de Leituras</h2>
+          <div class="historico-controles">
+            <button class="btn-icone" onclick="limparHistorico()" title="Limpar histórico">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <button class="btn-icone" onclick="exportarHistoricoCompleto()" title="Exportar histórico">
+              <i class="fas fa-file-export"></i>
+            </button>
+            <input type="text" id="filtro-historico" placeholder="Filtrar leituras...">
+          </div>
+        </div>
+        
+        <div class="historico-container" id="lista-historico">
+          <!-- Leituras serão carregadas aqui -->
+        </div>
+        
+        <div class="padroes-container">
+          <h3><i class="fas fa-chart-line"></i> Padrões Identificados</h3>
+          <div id="lista-padroes"></div>
+        </div>
+      </section>
+
+      <!-- ABA: ESTATÍSTICAS -->
+      <section id="estatisticas" class="tab-content">
+        <div class="stats-header">
+          <h2><i class="fas fa-chart-bar"></i> Estatísticas e Análises</h2>
+          <div class="periodo-seletor">
+            <span>Período:</span>
+            <select id="periodo-stats">
+              <option value="7">Últimos 7 dias</option>
+              <option value="30" selected>Últimos 30 dias</option>
+              <option value="90">Últimos 90 dias</option>
+              <option value="todos">Todo o histórico</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stats-card grande">
+            <h3><i class="fas fa-calendar-alt"></i> Frequência por Dia da Semana</h3>
+            <canvas id="chart-diario"></canvas>
+          </div>
+          
+          <div class="stats-card">
+            <h3><i class="fas fa-star"></i> Cartas Mais Frequentes</h3>
+            <div id="lista-frequentes"></div>
+          </div>
+          
+          <div class="stats-card">
+            <h3><i class="fas fa-brain"></i> Estado Emocional Prevalecente</h3>
+            <div id="estado-emocional"></div>
+          </div>
+          
+          <div class="stats-card grande">
+            <h3><i class="fas fa-wave-square"></i> Evolução Temporal</h3>
+            <canvas id="chart-evolucao"></canvas>
+          </div>
+          
+          <div class="stats-card">
+            <h3><i class="fas fa-random"></i> Sequências Recorrentes</h3>
+            <div id="sequencias-recorrentes"></div>
+          </div>
+          
+          <div class="stats-card">
+            <h3><i class="fas fa-user-clock"></i> Padrões Pessoais</h3>
+            <div id="padroes-pessoais"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: CONFIGURAÇÃO -->
+      <section id="config" class="tab-content">
+        <div class="config-header">
+          <h2><i class="fas fa-cog"></i> Configuração do Sistema</h2>
+        </div>
+        
+        <div class="config-grid">
+          <div class="config-card-grande">
+            <h3><i class="fas fa-user-cog"></i> Preferências Pessoais</h3>
+            
+            <div class="config-item">
+              <label for="nome-usuario">Nome (opcional):</label>
+              <input type="text" id="nome-usuario" placeholder="Como prefere ser chamado?">
+            </div>
+            
+            <div class="config-item">
+              <label for="tema-interface">Tema da Interface:</label>
+              <select id="tema-interface">
+                <option value="escuro">Escuro (padrão)</option>
+                <option value="claro">Claro</option>
+                <option value="azul-profundo">Azul Profundo</option>
+                <option value="roxo-mistico">Roxo Místico</option>
+                <option value="verde-floresta">Verde Floresta</option>
+              </select>
+            </div>
+            
+            <div class="config-item">
+              <label for="nivel-detalhe">Nível de Detalhe:</label>
+              <select id="nivel-detalhe">
+                <option value="minimo">Mínimo (apenas cartas)</option>
+                <option value="padrao" selected>Padrão (cartas + narrativa)</option>
+                <option value="completo">Completo (toda análise)</option>
+                <option value="profundo">Profundo (análise + contexto coletivo)</option>
+              </select>
+            </div>
+            
+            <div class="config-item">
+              <label>
+                <input type="checkbox" id="notificacoes" checked>
+                Receber notificações de padrões identificados
+              </label>
+            </div>
+            
+            <div class="config-item">
+              <label>
+                <input type="checkbox" id="modo-incognito">
+                Modo incógnito (não salva histórico)
+              </label>
+            </div>
+          </div>
+          
+          <div class="config-card-grande">
+            <h3><i class="fas fa-shield-alt"></i> Privacidade e Dados</h3>
+            
+            <div class="config-item">
+              <p>Contribuição para a sabedoria coletiva:</p>
+              <div class="controle-coletivo">
+                <button class="coletivo-btn active" data-nivel="minimo">Mínima</button>
+                <button class="coletivo-btn" data-nivel="anonimo">Anônima</button>
+                <button class="coletivo-btn" data-nivel="completo">Completa</button>
+              </div>
+              <p class="descricao-pequena">Ajuda o sistema a aprender padrões universais</p>
+            </div>
+            
+            <div class="config-item">
+              <label>
+                <input type="checkbox" id="exportar-automatico">
+                Exportar backup automático semanal
+              </label>
+            </div>
+            
+            <div class="config-botoes">
+              <button class="btn-perigo" onclick="limparTodosDados()">
+                <i class="fas fa-trash"></i> Limpar Todos os Dados
+              </button>
+              <button class="btn-aviso" onclick="exportarDadosCompletos()">
+                <i class="fas fa-database"></i> Exportar Todos os Dados
+              </button>
+              <button class="btn-sucesso" onclick="restaurarBackup()">
+                <i class="fas fa-file-import"></i> Restaurar Backup
+              </button>
+            </div>
+          </div>
+          
+          <div class="config-card-grande">
+            <h3><i class="fas fa-magic"></i> Recursos Avançados</h3>
+            
+            <div class="config-item">
+              <label for="velocidade-animacoes">Velocidade das Animações:</label>
+              <input type="range" id="velocidade-animacoes" min="0.5" max="3" step="0.5" value="1">
+              <span id="valor-velocidade">Normal</span>
+            </div>
+            
+            <div class="config-item">
+              <label for="api-externa">API de Inteligência Externa:</label>
+              <select id="api-externa">
+                <option value="nenhuma">Nenhuma</option>
+                <option value="openai">OpenAI GPT</option>
+                <option value="claude">Claude AI</option>
+                <option value="local">Modelo Local</option>
+              </select>
+              <input type="password" id="api-key" placeholder="Chave da API" class="hidden">
+            </div>
+            
+            <div class="config-item">
+              <label for="integracao-calendario">Integração com Calendário:</label>
+              <select id="integracao-calendario">
+                <option value="nenhuma">Nenhuma</option>
+                <option value="google">Google Calendar</option>
+                <option value="outlook">Outlook Calendar</option>
+              </select>
+            </div>
+            
+            <button class="btn-principal" onclick="salvarConfiguracoes()">
+              <i class="fas fa-save"></i> Salvar Configurações
+            </button>
+          </div>
+        </div>
+        
+        <div class="sobre-sistema">
+          <h3><i class="fas fa-info-circle"></i> Sobre o Sistema</h3>
+          <div class="sobre-info">
+            <p><strong>Versão:</strong> Sibila Cósmica 2.0</p>
+            <p><strong>Desenvolvido por:</strong> Coletivo Sibila</p>
+            <p><strong>Licença:</strong> Creative Commons BY-NC-SA</p>
+            <p><strong>Memória usada:</strong> <span id="memoria-usada">0 KB</span></p>
+            <p><strong>Leituras processadas:</strong> <span id="leituras-processadas">0</span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p>Sibila Cósmica © 2026 - Sistema de Inteligência Narrativa Evolutiva</p>
+          <p class="footer-sub">Cada leitura contribui para a sabedoria coletiva</p>
+        </div>
+        
+        <div class="footer-right">
+          <div class="sistema-status">
+            <span class="status-indicador" id="status-sistema"></span>
+            <span id="texto-status">Sistema ativo</span>
+          </div>
+          
+          <button class="btn-minimal" onclick="mostrarCreditos()">
+            <i class="fas fa-heart"></i> Créditos
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal de Créditos -->
+  <div id="modal-creditos" class="modal hidden">
+    <div class="modal-conteudo">
+      <div class="modal-header">
+        <h2>Créditos e Agradecimentos</h2>
+        <button class="modal-fechar" onclick="fecharModal('creditos')">×</button>
+      </div>
+      <div class="modal-corpo">
+        <h3>Inspirações:</h3>
+        <ul>
+          <li>Oraculos tradicionais de diversas culturas</li>
+          <li>Sistemas de divinação I Ching e Tarot</li>
+          <li>Psicologia analítica de Carl Jung</li>
+          <li>Teoria dos sistemas complexos</li>
+          <li>Inteligência Artificial Generativa</li>
+        </ul>
+        
+        <h3>Tecnologias utilizadas:</h3>
+        <ul>
+          <li>HTML5, CSS3, JavaScript ES6+</li>
+          <li>LocalStorage para persistência de dados</li>
+          <li>Canvas API para visualizações</li>
+          <li>Web Audio API para sons</li>
+          <li>Font Awesome para ícones</li>
+        </ul>
+        
+        <h3>Agradecimentos especiais:</h3>
+        <p>A todos que contribuíram com ideias, feedback e energia para este projeto.</p>
+        
+        <div class="assinatura">
+          <p>— O Coletivo Sibila</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Leitura Detalhada -->
+  <div id="modal-leitura" class="modal hidden">
+    <div class="modal-conteudo grande">
+      <div class="modal-header">
+        <h2 id="modal-titulo">Detalhes da Leitura</h2>
+        <button class="modal-fechar" onclick="fecharModal('leitura')">×</button>
+      </div>
+      <div class="modal-corpo" id="modal-corpo-leitura">
+        <!-- Conteúdo dinâmico -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificações -->
+  <div id="notificacoes-container"></div>
+
+  <!-- Sons -->
+  <audio id="som-carta" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ..."></audio>
+  <audio id="som-revelacao" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ..."></audio>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
